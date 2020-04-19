@@ -3,14 +3,21 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "koa": "^2.11.0",
+    "koa-joi-router": "^6.0.2",
+    "koa-logger": "^3.2.1",
+    "koa-respond": "^2.1.0"
+  },
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.2"
+    "eslint-plugin-import": "^2.20.2",
+    "nodemon": "^2.0.3"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./server",
+    "start-dev": "./node_modules/nodemon/bin/nodemon.js ./server"
   },
   "author": "",
   "license": "ISC"

@@ -29,7 +29,7 @@ const tasksInfo = [
 ];
 
 function getUserByName(queryInterface, { firstName, lastName }) {
-  return queryInterface.rawSelect('User', {
+  return queryInterface.rawSelect('Users', {
     where: {
       firstName,
       lastName,
@@ -52,11 +52,11 @@ module.exports = {
       };
     }));
 
-    return queryInterface.bulkInsert('Task', tasks, {});
+    return queryInterface.bulkInsert('Tasks', tasks, {});
   },
   down: (queryInterface, Sequelize) => Promise.all(
     tasksInfo.map((task) => queryInterface.bulkDelete(
-      'Task',
+      'Tasks',
       {
         [Sequelize.Op.and]: [
           { title: task.title },

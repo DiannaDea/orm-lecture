@@ -17,7 +17,7 @@ const usersInfo = [
 ];
 
 function getRoleByName(queryInterface, roleTitle) {
-  return queryInterface.rawSelect('Role', {
+  return queryInterface.rawSelect('Roles', {
     where: {
       title: roleTitle,
     },
@@ -38,11 +38,11 @@ module.exports = {
       };
     }));
 
-    return queryInterface.bulkInsert('User', users, {});
+    return queryInterface.bulkInsert('Users', users, {});
   },
   down: (queryInterface, Sequelize) => Promise.all(
     usersInfo.map((user) => queryInterface.bulkDelete(
-      'User',
+      'Users',
       {
         [Sequelize.Op.and]: [
           { firstName: user.firstName },

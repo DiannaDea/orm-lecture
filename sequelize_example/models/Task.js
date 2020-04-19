@@ -5,5 +5,9 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.STRING,
   }, {});
 
+  Task.associate = (models) => {
+    Task.belongsTo(models.User, { as: 'user' });
+  };
+
   return Task;
 };

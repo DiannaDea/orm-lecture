@@ -5,8 +5,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
 
   User.associate = (models) => {
-    User.hasMany(models.Task, { as: 'userId' });
-    User.belongsTo(models.Role, { as: 'roleId' });
+    User.belongsTo(models.Role, { as: 'role' });
   };
 
   return User;
