@@ -1,4 +1,5 @@
-const { User } = require('../sequelize_example/models');
+const { User, sequelize } = require('../sequelize_example/models');
+const TaskRepository = require('./task');
 
 const UserRepository = {
   getUsers: () => User.findAll(),
@@ -10,16 +11,18 @@ const UserRepository = {
       updatedAd: new Date(),
     })
     .save(),
-  deleteUser: async (id) => {
-    try {
-      const user = await User.findOne({ where: { id } });
-      await user.destroy();
+  deleteUser: async (id) => sequelize.transaction(async () => {
+    const user = await User.findOne({ where: { id } });
 
+    const unassignedTasksRes = await TaskRepository.unassignTasks(user.id);
+
+    if (unassignedTasksRes.every(Boolean)) {
+      await user.destroy();
       return true;
-    } catch (error) {
-      return false;
     }
-  },
+
+    return false;
+  }),
   updateUser: async (id, userInfo) => {
     try {
       await User.update(userInfo, { where: { id } });
