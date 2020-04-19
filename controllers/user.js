@@ -28,17 +28,47 @@ const UserController = {
   create: async (ctx) => {
     const { firstName, lastName } = ctx.request.body;
 
-    if (await UserRepository.getUser(ctx.request.body)) {
-      return ctx.send(400, { error: `User with name ${lastName} ${firstName} already exists` });
+    try {
+      if (await UserRepository.getUser(ctx.request.body)) {
+        return ctx.send(400, { error: `User with name ${lastName} ${firstName} already exists` });
+      }
+
+      const user = await UserRepository.createUser(ctx.request.body);
+
+      if (!user) {
+        return ctx.send(400, { error: 'Unable to create user with such params' });
+      }
+
+      return ctx.send(200, user);
+    } catch (error) {
+      return ctx.send(500, { error: error.message });
     }
+  },
+  delete: async (ctx) => {
+    const { id } = ctx.params;
 
-    const user = await UserRepository.createUser(ctx.request.body);
+    try {
+      const isDeleted = await UserRepository.deleteUser(id);
 
-    if (!user) {
-      return ctx.send(400, { error: 'Unable to create user with such params' });
+      return (isDeleted)
+        ? ctx.send(200, { isDeleted })
+        : ctx.send(500, { error: `Unable to delete user with id: ${id}` });
+    } catch (error) {
+      return ctx.send(500, { error: error.message });
     }
+  },
+  update: async (ctx) => {
+    const { id } = ctx.params;
 
-    return ctx.send(200, user);
+    try {
+      const isUpdated = await UserRepository.updateUser(id, ctx.request.body);
+
+      return (isUpdated)
+        ? ctx.send(200, { isUpdated })
+        : ctx.send(500, { error: `Unable to update user with id: ${id}` });
+    } catch (error) {
+      return ctx.send(500, { error: error.message });
+    }
   },
 };
 

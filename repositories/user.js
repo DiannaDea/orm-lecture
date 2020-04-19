@@ -10,6 +10,24 @@ const UserRepository = {
       updatedAd: new Date(),
     })
     .save(),
+  deleteUser: async (id) => {
+    try {
+      const user = await User.findOne({ where: { id } });
+      await user.destroy();
+
+      return true;
+    } catch (error) {
+      return false;
+    }
+  },
+  updateUser: async (id, userInfo) => {
+    try {
+      await User.update(userInfo, { where: { id } });
+      return true;
+    } catch (error) {
+      return false;
+    }
+  },
 };
 
 module.exports = UserRepository;

@@ -15,13 +15,13 @@ userRouter.route({
       id: Joi.number().required(),
     },
   },
-  handler: UserConstoller.getOne,
+  handler: [UserConstoller.getOne],
 });
 
 userRouter.route({
   method: 'get',
   path: '/',
-  handler: UserConstoller.getAll,
+  handler: [UserConstoller.getAll],
 });
 
 
@@ -37,6 +37,33 @@ userRouter.route({
     },
   },
   handler: [UserConstoller.create],
+});
+
+userRouter.route({
+  method: 'put',
+  path: '/:id',
+  validate: {
+    type: 'json',
+    params: {
+      id: Joi.number().required(),
+    },
+    body: {
+      firstName: Joi.string().regex(/^[\w\d]{2,15}$/).required(),
+      lastName: Joi.string().regex(/^[\w\d]{2,15}$/).required(),
+    },
+  },
+  handler: [UserConstoller.update],
+});
+
+userRouter.route({
+  method: 'delete',
+  path: '/:id',
+  validate: {
+    params: {
+      id: Joi.number().required(),
+    },
+  },
+  handler: [UserConstoller.delete],
 });
 
 module.exports = userRouter;
